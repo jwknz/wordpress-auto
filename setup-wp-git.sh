@@ -1,4 +1,4 @@
-mkdir site && cd site && \
+mkdir backend && cd backend && \
 git init && \
 curl https://raw.githubusercontent.com/github/gitignore/master/WordPress.gitignore > .gitignore && \
 curl -LO https://wordpress.org/latest.zip && \

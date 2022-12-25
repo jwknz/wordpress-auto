@@ -1,4 +1,4 @@
 curl -O https://wordpress.org/latest.zip
 unzip latest.zip 
-mv wordpress site
+mv wordpress backend
 rm latest.zip 
