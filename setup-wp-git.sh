@@ -7,6 +7,9 @@ curl -LO https://wordpress.org/latest.zip && \
 unzip latest.zip && \
 rm latest.zip && \
 mv wordpress/* ./ && \
+rm -rf wordpress && \
+cp ../wp-config.php . && \
+cp $1 .env && \
 git add --all && \
 git commit -sq -m "Initial commit of Wordpress core files. Hello World."
 
