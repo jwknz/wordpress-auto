@@ -6,6 +6,18 @@ Really just an easy way for me to start new projects as needed.
 * Some of these are for a headless setup.
 * Some of these use docker-compose
 
+A set of environment variables need to be created - for local dev and production.
+Run this script to create them after cloning this repo:
+
+## Clone repo and setup .env files
+
+```
+git clone git@github.com:jwknz/wordpress-auto.git
+cd wordpress-auto
+cp env.example dev-wp.env
+cp env.example prod-wp.env
+```
+
 ## Setup wordpress setup with it's own repo:
 
 ```
