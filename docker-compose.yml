@@ -1,0 +1,96 @@
+services:
+
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx.dockerfile
+    profiles: ["x86"]
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./wordpress:/var/www/html:delegated
+    depends_on:
+      - php
+      - db-x86
+    networks:
+      - wordpress
+
+  nginx-arm:
+    build:
+      context: .
+      dockerfile: nginx.dockerfile
+    profiles: ["arm"]
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./wordpress:/var/www/html:delegated
+    depends_on:
+      - php
+      - db-arm
+    networks:
+      - wordpress
+
+  php:
+    build:
+      context: .
+      dockerfile: php.dockerfile
+    profiles: ["wordpress"]
+    env_file:
+      - .env
+    volumes:
+      - ./wordpress:/var/www/html:delegated
+    networks:
+      - wordpress
+
+  wp:
+    build:
+      context: .
+      dockerfile: php.dockerfile
+    profiles: ["wordpress"]
+    entrypoint: ['wp', '--allow-root']
+    volumes:
+      - ./wordpress:/var/www/html:delegated
+    networks:
+      - wordpress
+
+  db-x86:
+    image: mysql:latest
+    profiles: ["x86"]
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_USER: wp
+      MYSQL_PASSWORD: upassword
+      MYSQL_DATABASE: wp
+      MYSQL_ROOT_PASSWORD: rpassword
+    volumes: # Optional, same as -v in docker run
+      -  wordpress:/VAR/LIB/MYSQL
+    networks:
+      - wordpress
+
+  db-arm:
+    image: beercan1989/arm-mysql:latest
+    profiles: ["arm"]
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_USER: wp
+      MYSQL_PASSWORD: upassword
+      MYSQL_DATABASE: wp
+      MYSQL_ROOT_PASSWORD: rpassword
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes: # Optional, same as -v in docker run
+      -  wordpress:/VAR/LIB/MYSQL
+    networks:
+      - wordpress
+
+networks: # Optional, same as docker network create
+  wordpress:
+
+volumes:
+  wordpress:
