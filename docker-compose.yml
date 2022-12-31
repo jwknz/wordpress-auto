@@ -14,7 +14,7 @@ services:
       - php
       - db-x86
     networks:
-      - wordpress
+      - wp_connect
 
   nginx-arm:
     build:
@@ -30,7 +30,7 @@ services:
       - php
       - db-arm
     networks:
-      - wordpress
+      - wp_connect
 
   php:
     build:
@@ -38,22 +38,24 @@ services:
       dockerfile: php.dockerfile
     profiles: ["wordpress"]
     env_file:
-      - .env
+      - ./wordpress/.env
     volumes:
       - ./wordpress:/var/www/html:delegated
     networks:
-      - wordpress
+      - wp_connect
 
   wp:
     build:
       context: .
       dockerfile: php.dockerfile
     profiles: ["wordpress"]
+    env_file:
+      - ./wordpress/.env
     entrypoint: ['wp', '--allow-root']
     volumes:
       - ./wordpress:/var/www/html:delegated
     networks:
-      - wordpress
+      - wp_connect
 
   db-x86:
     image: mysql:latest
@@ -67,9 +69,9 @@ services:
       MYSQL_DATABASE: wp
       MYSQL_ROOT_PASSWORD: rpassword
     volumes: # Optional, same as -v in docker run
-      -  wordpress:/VAR/LIB/MYSQL
+      -  ./mysql:/var/lib/mysql
     networks:
-      - wordpress
+      - wp_connect
 
   db-arm:
     image: beercan1989/arm-mysql:latest
@@ -82,15 +84,10 @@ services:
       MYSQL_PASSWORD: upassword
       MYSQL_DATABASE: wp
       MYSQL_ROOT_PASSWORD: rpassword
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
     volumes: # Optional, same as -v in docker run
-      -  wordpress:/VAR/LIB/MYSQL
+      -  ./mysql:/var/lib/mysql
     networks:
-      - wordpress
+      - wp_connect
 
 networks: # Optional, same as docker network create
-  wordpress:
-
-volumes:
-  wordpress:
+  wp_connect:
