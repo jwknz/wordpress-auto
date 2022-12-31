@@ -31,3 +31,9 @@ cp env.example prod-wp.env
 ./setup-wp-plain.sh dev-wp.env
 ./setup-wp-plain.sh prod-wp.env
 ```
+
+### Footnote
+
+Credit where credit is due:
+This repo is heavily based on the repo from aschmelyun, but I added some of my own config to it.
+https://github.com/aschmelyun/docker-compose-wordpress
